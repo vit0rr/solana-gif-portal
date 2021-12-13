@@ -95,7 +95,7 @@ const App = () => {
             View your GIF collection in the metaverse ✨
           </p>
           {!walletAddress && renderNotConnectedContainer()}
-          {!walletAddress && renderConnectedContainer()}
+          {walletAddress && renderConnectedContainer()}
         </div>
         </div>
       </div>
