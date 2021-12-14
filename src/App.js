@@ -2,9 +2,8 @@
  * We are going to be using the useEffect hook!
   Code based on buildspace
  */
-import React, { useEffect, useState } from 'react';
-import './App.css';
-
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
 const App = () => {
   /*
@@ -12,60 +11,61 @@ const App = () => {
    * connected or not
    */
   const [walletAddress, setWalletAddress] = useState(null);
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState("");
+  const [gifList, setGifList] = useState([]);
   const checkIfWalletIsConnected = async () => {
     try {
       const { solana } = window;
 
       if (solana) {
         if (solana.isPhantom) {
-          console.log('Phantom wallet found!');
-          const response = await solana.connect({onlyIfTrusted: true})
+          console.log("Phantom wallet found!");
+          const response = await solana.connect({ onlyIfTrusted: true });
           console.log(
-            'Connected with Public Key',
+            "Connected with Public Key",
             response.publicKey.toString()
-          )
-          setWalletAddress(response.publicKey.toString())
+          );
+          setWalletAddress(response.publicKey.toString());
         }
       } else {
-        alert('Solana object not found! Get a Phantom Wallet 👻');
+        alert("Solana object not found! Get a Phantom Wallet 👻");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const connectWallet = async() => {
-    const {solana} = window
-   
-    if (solana){
-      const response = await solana.connect()
-      console.log('Connected with Public Key:', response.publicKey.toString())
-      setWalletAddress(response.publicKey.toString())
+  const connectWallet = async () => {
+    const { solana } = window;
 
-      
+    if (solana) {
+      const response = await solana.connect();
+      console.log("Connected with Public Key:", response.publicKey.toString());
+      setWalletAddress(response.publicKey.toString());
     }
   };
 
   const sendGif = async () => {
     if (inputValue.length > 0) {
       console.log('Gif link:', inputValue);
+      setGifList([...gifList, inputValue]);
+      setInputValue('');
     } else {
       console.log('Empty input. Try again.');
     }
   };
-  
+
   const onInputChange = (event) => {
-    const { value } = event.target
-    setInputValue(value)
-  }
+    const { value } = event.target;
+    setInputValue(value);
+  };
 
   const TEST_GIFS = [
-    'https://i.giphy.com/media/eIG0HfouRQJQr1wBzz/giphy.webp',
-    'https://media3.giphy.com/media/L71a8LW2UrKwPaWNYM/giphy.gif?cid=ecf05e47rr9qizx2msjucl1xyvuu47d7kf25tqt2lvo024uo&rid=giphy.gif&ct=g',
-    'https://media4.giphy.com/media/AeFmQjHMtEySooOc8K/giphy.gif?cid=ecf05e47qdzhdma2y3ugn32lkgi972z9mpfzocjj6z1ro4ec&rid=giphy.gif&ct=g',
-    'https://i.giphy.com/media/PAqjdPkJLDsmBRSYUp/giphy.webp'
-  ]
+    "https://i.giphy.com/media/eIG0HfouRQJQr1wBzz/giphy.webp",
+    "https://media3.giphy.com/media/L71a8LW2UrKwPaWNYM/giphy.gif?cid=ecf05e47rr9qizx2msjucl1xyvuu47d7kf25tqt2lvo024uo&rid=giphy.gif&ct=g",
+    "https://media4.giphy.com/media/AeFmQjHMtEySooOc8K/giphy.gif?cid=ecf05e47qdzhdma2y3ugn32lkgi972z9mpfzocjj6z1ro4ec&rid=giphy.gif&ct=g",
+    "https://i.giphy.com/media/PAqjdPkJLDsmBRSYUp/giphy.webp",
+  ];
 
   const renderNotConnectedContainer = () => (
     <button
@@ -78,15 +78,24 @@ const App = () => {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <form onSubmit={(event) => {
-        event.preventDefault();
-        sendGif()
-      }}>
-        <input type='text' placeholder='Enter gif link!' value={inputValue} onChange={onInputChange}></input>
-        <button type='submit' className="cta-button submit-gif-button">Submit</button>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          sendGif();
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Enter gif link!"
+          value={inputValue}
+          onChange={onInputChange}
+        ></input>
+        <button type="submit" className="cta-button submit-gif-button">
+          Submit
+        </button>
       </form>
       <div className="gif-grid">
-        {TEST_GIFS.map(gif => (
+        {gifList.map((gif) => (
           <div className="gif-item" key={gif}>
             <img src={gif} alt={gif} />
           </div>
@@ -103,28 +112,38 @@ const App = () => {
     const onLoad = async () => {
       await checkIfWalletIsConnected();
     };
-    window.addEventListener('load', onLoad);
-    return () => window.removeEventListener('load', onLoad);
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      console.log('Fetching GIF list...');
+      
+      // Call Solana program here.
+  
+      // Set state
+      setGifList(TEST_GIFS);
+    }
+  }, [walletAddress]);
 
   return (
     <div className="App">
       {/* This was solely added for some styling fanciness */}
-			<div className={walletAddress ? 'authed-container' : 'container'}>
-      <div className="container">
-        <div className="header-container">
-          <p className="header">🖼 GIF Portal</p>
-          <p className="sub-text">
-            View your GIF collection in the metaverse ✨
-          </p>
-          {!walletAddress && renderNotConnectedContainer()}
-          {walletAddress && renderConnectedContainer()}
-        </div>
+      <div className={walletAddress ? "authed-container" : "container"}>
+        <div className="container">
+          <div className="header-container">
+            <p className="header">🖼 GIF Portal</p>
+            <p className="sub-text">
+              View your GIF collection in the metaverse ✨
+            </p>
+            {!walletAddress && renderNotConnectedContainer()}
+            {walletAddress && renderConnectedContainer()}
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default App;
