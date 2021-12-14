@@ -60,11 +60,12 @@ const App = () => {
     setInputValue(value);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const TEST_GIFS = [
-    "https://i.giphy.com/media/eIG0HfouRQJQr1wBzz/giphy.webp",
-    "https://media3.giphy.com/media/L71a8LW2UrKwPaWNYM/giphy.gif?cid=ecf05e47rr9qizx2msjucl1xyvuu47d7kf25tqt2lvo024uo&rid=giphy.gif&ct=g",
-    "https://media4.giphy.com/media/AeFmQjHMtEySooOc8K/giphy.gif?cid=ecf05e47qdzhdma2y3ugn32lkgi972z9mpfzocjj6z1ro4ec&rid=giphy.gif&ct=g",
-    "https://i.giphy.com/media/PAqjdPkJLDsmBRSYUp/giphy.webp",
+    "https://media.giphy.com/media/I6wUi5eTdUCWI/giphy.gif",
+    "https://media.giphy.com/media/OkhbcKxPDCKli/giphy.gif",
+    "https://media.giphy.com/media/XFnZJkgxvxvnG/giphy.gif",
+    "https://media.giphy.com/media/3fNmJ20ErpkjK/giphy.gif",
   ];
 
   const renderNotConnectedContainer = () => (
@@ -89,12 +90,13 @@ const App = () => {
           placeholder="Enter gif link!"
           value={inputValue}
           onChange={onInputChange}
-        ></input>
+        />
         <button type="submit" className="cta-button submit-gif-button">
           Submit
         </button>
       </form>
       <div className="gif-grid">
+        {/* Map through gifList instead of TEST_GIFS */}
         {gifList.map((gif) => (
           <div className="gif-item" key={gif}>
             <img src={gif} alt={gif} />
@@ -125,7 +127,7 @@ const App = () => {
       // Set state
       setGifList(TEST_GIFS);
     }
-  }, [walletAddress]);
+  }, [TEST_GIFS, walletAddress]);
 
   return (
     <div className="App">
