@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*; // Import de algumas coisas
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Declara um id
+declare_id!("CJSaikztCUF1bMPhrLP1Q4GtGMNgEZ4ELb5qeVBBcB7s"); // Declara um id
 
 #[program] // Define o programa - isso nos permite chamar no frontend dps
 pub mod myepicproject { // pub mod é um modulo e nos permite definir varias funcoes e variaveis

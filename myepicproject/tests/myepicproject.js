@@ -5,7 +5,7 @@ const main = async() => {
 
   anchor.setProvider(anchor.Provider.env());
   const program = anchor.workspace.Myepicproject;
-  const tx = await program.rpc.startStuffOff();
+  const tx = await program.rpc.initialize(); // compila automaticamente nosso código lib.rs e implementa (essa é a funcao initialize la do lib.rs)
 
   console.log("📝 Your transaction signature", tx);
 }
