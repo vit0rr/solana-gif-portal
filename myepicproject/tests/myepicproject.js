@@ -25,6 +25,14 @@ const main = async() => {
   console.log('👀 GIF Count', account.totalGifs.toString())
  /*  const tx = await program.rpc.initialize(); */ // compila automaticamente nosso código lib.rs e implementa (essa é a funcao initialize la do lib.rs)
 
+ await program.rpc.addGif({
+   accounts: {
+     baseAccount: baseAccount.publicKey
+   }
+ })
+
+ account = await program.account.baseAccount.fetch(baseAccount.publicKey)
+ console.log('👀 GIF Count', account.totalGifs.toString())
 }
 
 const runMain = async () => {
