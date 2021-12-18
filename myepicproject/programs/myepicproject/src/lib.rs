@@ -15,12 +15,12 @@ pub mod myepicproject { // pub mod é um modulo e nos permite definir varias fun
     pub fn add_gif(ctx: Context<AddGif>, gif_link: String) -> ProgramResult { // Funcao que recebe o contexto e produz o resultado
         // pega referencia da conta
         let base_account = &mut ctx.accounts.base_account;
-        let user = &mut ctx.accounts.user
+        let user = &mut ctx.accounts.user;
 
         let item = ItemStruct {
             gif_link: gif_link.to_string(),
             user_address: *user.to_account_info().key
-        }
+        };
 
         base_account.gif_list.push(item); // Adiciona o gif na lista
         base_account.total_gifs += 1; // Adiciona um gif
